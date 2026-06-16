@@ -7,26 +7,26 @@ def main() -> None:
         print("Usage:", sys.argv[0], "<file>")
         return
 
-    print("=== Cyber Archives Recovery ===")
+    print("=== Cyber Archives Recovery & Preservation ===")
 
     filename = sys.argv[1]
-
     print(f"Accessing file '{filename}'")
+
+    source_file = None
     try:
         source_file = open(filename)
+        content = source_file.read()
+        print("---\n")
+        print(content, end="")
+        print("\n---")
     except OSError as e:
         print(f"Error opening file '{filename}':", e)
         return
-
-    content = source_file.read()
-
-    print("---\n")
-    print(content, end="")
-    print("\n---")
-
-    source_file.close()
-    print(f"File '{filename}' closed.")
-    print("")
+    finally:
+        if source_file is not None:
+            source_file.close()
+            print(f"File '{filename}' closed.")
+            print("")
 
     content_new = "#\n".join(content.split("\n"))
     print("Transform data:")
@@ -35,21 +35,22 @@ def main() -> None:
     print("\n---")
 
     filename_new = input("Enter new file name (or empty): ")
-
     if not filename_new:
         print("Not saving data.")
         return
 
+    save_file = None
     try:
         print(f"Saving data to '{filename_new}'")
         save_file = open(filename_new, "w")
+        save_file.write(content_new)
+        print(f"Data saved in file '{filename_new}'.")
     except OSError as e:
-        print(f"Error saving file '{filename}':", e)
+        print(f"Error saving file '{filename_new}':", e)
         return
-
-    save_file.write(content_new)
-    print(f"Data saved in file '{filename_new}'.")
-    save_file.close()
+    finally:
+        if save_file is not None:
+            save_file.close()
 
 
 if __name__ == "__main__":
