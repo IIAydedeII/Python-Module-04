@@ -26,7 +26,7 @@ def main() -> None:
         if source_file is not None:
             source_file.close()
             print(f"File '{filename}' closed.")
-            print("")
+            print()
 
     content_new = "#\n".join(content.split("\n"))
     print("Transform data:")
